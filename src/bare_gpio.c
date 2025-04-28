@@ -1,7 +1,37 @@
 #include "bare_gpio.h"
 
+/**
+ * @brief  Enable RCC Clock for a given GPIO port
+ * @param  GPIOx: pointer to GPIO peripheral base address
+ * @retval None
+ * 
+ * @note   Must be called before accessing GPIO registers.
+ */
+static void bare_gpio_enable_clock(GPIO_TypeDef *GPIOx)
+{
+    if (GPIOx == GPIOA) {
+        RCC->AHB1ENR |= (1 << 0);
+    } else if (GPIOx == GPIOB) {
+        RCC->AHB1ENR |= (1 << 1);
+    } else if (GPIOx == GPIOC) {
+        RCC->AHB1ENR |= (1 << 2);
+    } else if (GPIOx == GPIOD) {
+        RCC->AHB1ENR |= (1 << 3);
+    } else if (GPIOx == GPIOE) {
+        RCC->AHB1ENR |= (1 << 4);
+    } else if (GPIOx == GPIOF) {
+        RCC->AHB1ENR |= (1 << 5);
+    } else if (GPIOx == GPIOG) {
+        RCC->AHB1ENR |= (1 << 6);
+    } else if (GPIOx == GPIOH) {
+        RCC->AHB1ENR |= (1 << 7);
+    }
+}
+
 void bare_gpio_init(GPIO_TypeDef *GPIOx, uint8_t pin, GPIO_Mode_t mode,
     GPIO_OType_t otype, GPIO_Speed_t speed, GPIO_Pull_t pull){
+        bare_gpio_enable_clock(GPIOx);
+
         // Configure Mode
         GPIOx->MODER &= ~(0x3U << (pin * 2));    // Clear existing mode bits
         GPIOx->MODER |= ((mode & 0x3U) << (pin * 2)); // Set new mode
