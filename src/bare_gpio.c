@@ -1,174 +1,120 @@
 /*******************************************************************************************
- * @file    device_registers.h
+ * @file    bare_gpio.c
  * @author  ka5j
- * @brief   STM32F446RE Device Memory-Mapped Register Definitions
+ * @brief   Bare-metal GPIO driver implementation for STM32F446RE
  * @version 1.0
  * @date    2025-04-28
  *
- * @note    This file defines structures and base addresses for STM32F446RE peripherals.
- *          Only memory-mapped register definitions are included. No function implementations.
+ * @note    Provides high-level GPIO functionality without HAL. 
+ *          Users can initialize, write, read, and toggle GPIO pins.
  *******************************************************************************************/
 
-#ifndef DEVICE_REGISTERS_H_
-#define DEVICE_REGISTERS_H_
-
-#include <stdint.h> // Standard integer types
+#include "bare_gpio.h"         // Include the header that declares the public API
+#include "device_registers.h"  // Include low-level device memory definitions
 
 /*******************************************************************************************
- * Cortex-M4 Core Peripheral Base Addresses
+ *                               Internal Helper Functions
  *******************************************************************************************/
-#define CORTEX_M4_PERIPH_BASE    (0xE0000000U)
-#define SYSTICK_BASE             (CORTEX_M4_PERIPH_BASE + 0xE010U)
-#define NVIC_BASE                (CORTEX_M4_PERIPH_BASE + 0xE100U)
 
-/*******************************************************************************************
- * Bus Peripheral Base Addresses
- *******************************************************************************************/
-#define APB1PERIPH_BASE          (0x40000000U)
-#define APB2PERIPH_BASE          (0x40010000U)
-#define AHB1PERIPH_BASE          (0x40020000U)
-#define AHB2PERIPH_BASE          (0x50000000U)
-#define AHB3PERIPH_BASE          (0x60000000U)
-
-/*******************************************************************************************
- * SysTick Register Definition
- *******************************************************************************************/
-typedef struct
+/**
+ * @brief  Enable RCC Clock for a given GPIO port
+ * @param  GPIOx: pointer to GPIO peripheral base address
+ * @retval None
+ * 
+ * @note   Must be called before accessing GPIO registers.
+ */
+static void bare_gpio_enable_clock(GPIO_TypeDef *GPIOx)
 {
-    volatile uint32_t CSR;       /*!< SysTick Control and Status Register */
-    volatile uint32_t RVR;       /*!< SysTick Reload Value Register */
-    volatile uint32_t CVR;       /*!< SysTick Current Value Register */
-    volatile uint32_t CALIB;     /*!< SysTick Calibration Register */
-} SysTick_TypeDef;
+    if (GPIOx == GPIOA) {
+        RCC->AHB1ENR |= (1 << 0);
+    } else if (GPIOx == GPIOB) {
+        RCC->AHB1ENR |= (1 << 1);
+    } else if (GPIOx == GPIOC) {
+        RCC->AHB1ENR |= (1 << 2);
+    } else if (GPIOx == GPIOD) {
+        RCC->AHB1ENR |= (1 << 3);
+    } else if (GPIOx == GPIOE) {
+        RCC->AHB1ENR |= (1 << 4);
+    } else if (GPIOx == GPIOF) {
+        RCC->AHB1ENR |= (1 << 5);
+    } else if (GPIOx == GPIOG) {
+        RCC->AHB1ENR |= (1 << 6);
+    } else if (GPIOx == GPIOH) {
+        RCC->AHB1ENR |= (1 << 7);
+    }
+}
 
 /*******************************************************************************************
- * NVIC Register Definition
+ *                               Public API Functions
  *******************************************************************************************/
-typedef struct
+
+/**
+ * @brief  Initialize a GPIO pin
+ * @param  GPIOx: pointer to GPIO peripheral base address
+ * @param  pin: GPIO pin number (0-15)
+ * @param  mode: GPIO mode (input, output, alternate, analog)
+ * @param  otype: Output type (push-pull, open-drain)
+ * @param  speed: Output speed (low, medium, fast, high)
+ * @param  pull: Pull-up/pull-down configuration
+ * @retval None
+ */
+void bare_gpio_init(GPIO_TypeDef *GPIOx, uint8_t pin, GPIO_Mode_t mode,
+                    GPIO_OType_t otype, GPIO_Speed_t speed, GPIO_Pull_t pull)
 {
-    volatile uint32_t ISER[8];      /*!< Interrupt Set-Enable Registers,           Address offset: 0x000 */
-    uint32_t RESERVED0[24];         /*!< Reserved,                                 Address offset: 0x020-0x07C */
-    volatile uint32_t ICER[8];      /*!< Interrupt Clear-Enable Registers,         Address offset: 0x080 */
-    uint32_t RESERVED1[24];         /*!< Reserved,                                 Address offset: 0x0A0-0x0FC */
-    volatile uint32_t ISPR[8];      /*!< Interrupt Set-Pending Registers,          Address offset: 0x100 */
-    uint32_t RESERVED2[24];         /*!< Reserved,                                 Address offset: 0x120-0x17C */
-    volatile uint32_t ICPR[8];      /*!< Interrupt Clear-Pending Registers,        Address offset: 0x180 */
-    uint32_t RESERVED3[24];         /*!< Reserved,                                 Address offset: 0x1A0-0x1FC */
-    volatile uint32_t IABR[8];      /*!< Interrupt Active Bit Registers,           Address offset: 0x200 */
-    uint32_t RESERVED4[56];         /*!< Reserved,                                 Address offset: 0x220-0x2FC */
-    volatile uint8_t IPR[240];      /*!< Interrupt Priority Registers,             Address offset: 0x300 */
-    uint32_t RESERVED5[644];        /*!< Reserved for future expansion */
-    volatile uint32_t STIR;         /*!< Software Trigger Interrupt Register,      Address offset: 0xE00 */
-} NVIC_TypeDef;
+    /* Enable the clock for GPIO port */
+    bare_gpio_enable_clock(GPIOx);
 
-/*******************************************************************************************
- * Core Peripheral Instances
- *******************************************************************************************/
-#define SYSTICK    ((SysTick_TypeDef *) SYSTICK_BASE)
-#define NVIC       ((NVIC_TypeDef *) NVIC_BASE)
+    /* 1. Configure GPIO mode */
+    GPIOx->MODER &= ~(0x3U << (pin * 2)); // Clear existing mode
+    GPIOx->MODER |= ((mode & 0x03U) << (pin * 2)); // Set new mode
 
-/*******************************************************************************************
- * RCC (Reset and Clock Control) Base Address
- *******************************************************************************************/
-#define RCC_BASE                (AHB1PERIPH_BASE + 0x3800U)
+    /* 2. Configure output type */
+    GPIOx->OTYPER &= ~(0x1U << pin); // Clear
+    GPIOx->OTYPER |= ((otype & 0x1U) << pin); // Set
 
-/*******************************************************************************************
- * RCC Register Definition
- *******************************************************************************************/
-typedef struct
+    /* 3. Configure output speed */
+    GPIOx->OSPEEDR &= ~(0x3U << (pin * 2)); // Clear
+    GPIOx->OSPEEDR |= ((speed & 0x03U) << (pin * 2)); // Set
+
+    /* 4. Configure pull-up/pull-down resistors */
+    GPIOx->PUPDR &= ~(0x3U << (pin * 2)); // Clear
+    GPIOx->PUPDR |= ((pull & 0x03U) << (pin * 2)); // Set
+}
+
+/**
+ * @brief  Write to a GPIO pin (set high or low)
+ * @param  GPIOx: pointer to GPIO peripheral base address
+ * @param  pin: GPIO pin number (0-15)
+ * @param  state: GPIO_PIN_HIGH or GPIO_PIN_LOW
+ * @retval None
+ */
+void bare_gpio_write(GPIO_TypeDef *GPIOx, uint8_t pin, uint8_t state)
 {
-    volatile uint32_t CR;
-    volatile uint32_t PLLCFGR;
-    volatile uint32_t CFGR;
-    volatile uint32_t CIR;
-    volatile uint32_t AHB1RSTR;
-    volatile uint32_t AHB2RSTR;
-    volatile uint32_t AHB3RSTR;
-    uint32_t RESERVED0;
-    volatile uint32_t APB1RSTR;
-    volatile uint32_t APB2RSTR;
-    uint32_t RESERVED1;
-    uint32_t RESERVED2;
-    volatile uint32_t AHB1ENR;
-    volatile uint32_t AHB2ENR;
-    volatile uint32_t AHB3ENR;
-    uint32_t RESERVED3;
-    volatile uint32_t APB1ENR;
-    volatile uint32_t APB2ENR;
-    uint32_t RESERVED4;
-    uint32_t RESERVED5;
-    volatile uint32_t AHB1LPENR;
-    volatile uint32_t AHB2LPENR;
-    volatile uint32_t AHB3LPENR;
-    uint32_t RESERVED6;
-    volatile uint32_t APB1LPENR;
-    volatile uint32_t APB2LPENR;
-    uint32_t RESERVED7;
-    uint32_t RESERVED8;
-    volatile uint32_t BDCR;
-    volatile uint32_t CSR;
-    uint32_t RESERVED9;
-    uint32_t RESERVED10;
-    volatile uint32_t SSCGR;
-    volatile uint32_t PLLI2SCFGR;
-    volatile uint32_t PLLSAICFGR;
-    volatile uint32_t DCKCFGR;
-    volatile uint32_t CKGATENR;
-    volatile uint32_t DCKCFGR2;
-} RCC_TypeDef;
+    if (state == GPIO_PIN_HIGH) {
+        GPIOx->BSRR = (1U << pin); // Set bit (high)
+    } else {
+        GPIOx->BSRR = (1U << (pin + 16)); // Reset bit (low)
+    }
+}
 
-/*******************************************************************************************
- * RCC Instance
- *******************************************************************************************/
-#define RCC     ((RCC_TypeDef *) RCC_BASE)
-
-/*******************************************************************************************
- * GPIO Base Addresses
- *******************************************************************************************/
-#define GPIOA_BASE              (AHB1PERIPH_BASE + 0x0000U)
-#define GPIOB_BASE              (AHB1PERIPH_BASE + 0x0400U)
-#define GPIOC_BASE              (AHB1PERIPH_BASE + 0x0800U)
-#define GPIOD_BASE              (AHB1PERIPH_BASE + 0x0C00U)
-#define GPIOE_BASE              (AHB1PERIPH_BASE + 0x1000U)
-#define GPIOF_BASE              (AHB1PERIPH_BASE + 0x1400U)
-#define GPIOG_BASE              (AHB1PERIPH_BASE + 0x1800U)
-#define GPIOH_BASE              (AHB1PERIPH_BASE + 0x1C00U)
-
-/*******************************************************************************************
- * GPIO Register Definition
- *******************************************************************************************/
-typedef struct
+/**
+ * @brief  Read the input state of a GPIO pin
+ * @param  GPIOx: pointer to GPIO peripheral base address
+ * @param  pin: GPIO pin number (0-15)
+ * @retval Pin state (0 or 1)
+ */
+uint8_t bare_gpio_read(GPIO_TypeDef *GPIOx, uint8_t pin)
 {
-    volatile uint32_t MODER;     /*!< GPIO port mode register */
-    volatile uint32_t OTYPER;    /*!< GPIO port output type register */
-    volatile uint32_t OSPEEDR;   /*!< GPIO port output speed register */
-    volatile uint32_t PUPDR;     /*!< GPIO port pull-up/pull-down register */
-    volatile uint32_t IDR;       /*!< GPIO port input data register */
-    volatile uint32_t ODR;       /*!< GPIO port output data register */
-    volatile uint32_t BSRR;      /*!< GPIO port bit set/reset register */
-    volatile uint32_t LCKR;      /*!< GPIO port configuration lock register */
-    volatile uint32_t AFRL;      /*!< GPIO alternate function low register */
-    volatile uint32_t AFRH;      /*!< GPIO alternate function high register */
-} GPIO_TypeDef;
+    return (uint8_t)((GPIOx->IDR >> pin) & 0x01);
+}
 
-/*******************************************************************************************
- * GPIO Instances
- *******************************************************************************************/
-#define GPIOA   ((GPIO_TypeDef *) GPIOA_BASE)
-#define GPIOB   ((GPIO_TypeDef *) GPIOB_BASE)
-#define GPIOC   ((GPIO_TypeDef *) GPIOC_BASE)
-#define GPIOD   ((GPIO_TypeDef *) GPIOD_BASE)
-#define GPIOE   ((GPIO_TypeDef *) GPIOE_BASE)
-#define GPIOF   ((GPIO_TypeDef *) GPIOF_BASE)
-#define GPIOG   ((GPIO_TypeDef *) GPIOG_BASE)
-#define GPIOH   ((GPIO_TypeDef *) GPIOH_BASE)
-
-/*******************************************************************************************
- * Timer Base Addresses (APB1 timers)
- *******************************************************************************************/
-#define TIM2_BASE               (APB1PERIPH_BASE + 0x0000U)
-#define TIM3_BASE               (APB1PERIPH_BASE + 0x0400U)
-#define TIM4_BASE               (APB1PERIPH_BASE + 0x0800U)
-#define TIM5_BASE               (APB1PERIPH_BASE + 0x0C00U)
-
-#endif /* DEVICE_REGISTERS_H_ */
+/**
+ * @brief  Toggle the output state of a GPIO pin
+ * @param  GPIOx: pointer to GPIO peripheral base address
+ * @param  pin: GPIO pin number (0-15)
+ * @retval None
+ */
+void bare_gpio_toggle(GPIO_TypeDef *GPIOx, uint8_t pin)
+{
+    GPIOx->ODR ^= (1U << pin);
+}
