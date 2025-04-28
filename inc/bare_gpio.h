@@ -1,3 +1,12 @@
+/*******************************************************************************************
+ * @file    bare_gpio.h
+ * @author  ka5j
+ * @brief   Bare-metal GPIO driver for STM32F446RE
+ * @version 1.0
+ * @date    2025-04-28
+ *
+ * @note    Provides high-level GPIO functionality without HAL.
+ *******************************************************************************************/
 #ifndef GPIO_H_
 #define GPIO_H_
 
