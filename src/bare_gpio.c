@@ -29,7 +29,8 @@ static void bare_gpio_enable_clock(GPIO_TypeDef *GPIOx)
 }
 
 void bare_gpio_init(GPIO_TypeDef *GPIOx, uint8_t pin, GPIO_Mode_t mode,
-    GPIO_OType_t otype, GPIO_Speed_t speed, GPIO_Pull_t pull){
+    GPIO_OType_t otype, GPIO_Speed_t speed, GPIO_Pull_t pull)
+    {
         bare_gpio_enable_clock(GPIOx);
 
         // Configure Mode
@@ -48,3 +49,12 @@ void bare_gpio_init(GPIO_TypeDef *GPIOx, uint8_t pin, GPIO_Mode_t mode,
         GPIOx->PUPDR &= ~(0x3U << (pin * 2));     // Clear pull-up/pull-down bits
         GPIOx->PUPDR |= ((pull & 0x3U) << (pin * 2)); // Set pull config
     }
+
+void bare_gpio_write(GPIO_TypeDef *GPIOx, uint8_t pin, uint8_t state)
+{
+    if (state == GPIO_PIN_HIGH) {
+        GPIOx->BSRR = (1U << pin); // Set bit (high)
+    } else {
+        GPIOx->BSRR = (1U << (pin + 16)); // Reset bit (low)
+    }
+}
