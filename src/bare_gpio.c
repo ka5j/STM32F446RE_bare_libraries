@@ -58,3 +58,8 @@ void bare_gpio_write(GPIO_TypeDef *GPIOx, uint8_t pin, uint8_t state)
         GPIOx->BSRR = (1U << (pin + 16)); // Reset bit (low)
     }
 }
+
+uint8_t bare_gpio_read(GPIO_TypeDef *GPIOx, uint8_t pin)
+{
+    return (uint8_t)((GPIOx->IDR >> pin) & 0x01);
+}
