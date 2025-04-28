@@ -1,6 +1,6 @@
 /*******************************************************************************************
  * @file    bare_gpio.h
- * @author  Krish Ahuja
+ * @author  ka5j
  * @brief   Bare-metal GPIO driver for STM32F446RE
  * @version 1.0
  * @date    2025-04-28
