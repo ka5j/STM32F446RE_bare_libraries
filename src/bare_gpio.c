@@ -63,3 +63,8 @@ uint8_t bare_gpio_read(GPIO_TypeDef *GPIOx, uint8_t pin)
 {
     return (uint8_t)((GPIOx->IDR >> pin) & 0x01);
 }
+
+void bare_gpio_toggle(GPIO_TypeDef *GPIOx, uint8_t pin)
+{
+    GPIOx->ODR ^= (1U << pin);
+}
