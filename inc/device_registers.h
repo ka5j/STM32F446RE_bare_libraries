@@ -31,6 +31,37 @@
 #define NVIC_BASE           (CORTEX_M4_PERIPH_BASE + 0xE100U)
 
 /*******************************************************************************************
+ * NVIC Peripheral Definitions
+ *******************************************************************************************/
+typedef struct
+{
+    volatile uint32_t ISER[8];     /*!< Interrupt Set-Enable Registers,           Address offset: 0x000 */
+    uint32_t RESERVED0[24];        /*!< Reserved, 0x020 - 0x07C */
+    
+    volatile uint32_t ICER[8];     /*!< Interrupt Clear-Enable Registers,         Address offset: 0x080 */
+    uint32_t RESERVED1[24];        /*!< Reserved, 0x0A0 - 0x0FC */
+    
+    volatile uint32_t ISPR[8];     /*!< Interrupt Set-Pending Registers,          Address offset: 0x100 */
+    uint32_t RESERVED2[24];        /*!< Reserved, 0x120 - 0x17C */
+    
+    volatile uint32_t ICPR[8];     /*!< Interrupt Clear-Pending Registers,        Address offset: 0x180 */
+    uint32_t RESERVED3[24];        /*!< Reserved, 0x1A0 - 0x1FC */
+    
+    volatile uint32_t IABR[8];     /*!< Interrupt Active Bit Registers,           Address offset: 0x200 */
+    uint32_t RESERVED4[56];        /*!< Reserved, 0x220 - 0x2FC */
+    
+    volatile uint8_t IPR[240];     /*!< Interrupt Priority Registers,             Address offset: 0x300 */
+    uint32_t RESERVED5[644];       /*!< Reserved for further registers */
+    
+    volatile uint32_t STIR;        /*!< Software Trigger Interrupt Register,      Address offset: 0xE00 */
+} NVIC_TypeDef;
+
+/*******************************************************************************************
+ * NVIC Peripheral Instance
+ *******************************************************************************************/
+#define NVIC ((SysTick_TypeDef *) NVIC_BASE)
+
+/*******************************************************************************************
  * SysTick Peripheral Definitions
  *******************************************************************************************/
 typedef struct{
