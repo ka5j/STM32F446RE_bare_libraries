@@ -1,3 +1,13 @@
+/*******************************************************************************************
+ * @file    device_registers.h
+ * @author  ka5j
+ * @brief   STM32F446RE Device Memory Mapped Register Definitions
+ * @version 1.0
+ * @date    2025-04-28
+ *
+ * @note    This file defines structures and base addresses for STM32F446RE peripherals.
+ *          Only memory-mapped register definitions. No function code here.
+ *******************************************************************************************/
 #ifndef DEVICE_REGISTERS_H_
 #define DEVICE_REGISTERS_H_
 
@@ -36,17 +46,27 @@
 #define GPIOG_BASE (AHB1PERPH_BASE + 0x1800)
 #define GPIOH_BASE (AHB1PERPH_BASE + 0x1C00)
 
-//GPIOx Register Offsets
-#define MODER_OFFSET 0x00
-#define OTYPER_OFFSET 0x04
-#define OSPEEDR_OFFSET 0x08
-#define PUPDR_OFFSET 0x0C
-#define IDR_OFFSET 0x10
-#define ODR_OFFSET 0x14
-#define BSRR_OFFSET 0x18
-#define LCKR_OFFSET 0x1C
-#define AFRL_OFFSET 0x20
-#define AFRH_OFFSET 0x24
+//Define gpio ports
+#define GPIOA   ((GPIO_TypeDef *) GPIOA_BASE)
+#define GPIOB   ((GPIO_TypeDef *) GPIOB_BASE)
+#define GPIOC   ((GPIO_TypeDef *) GPIOC_BASE)
+#define GPIOD   ((GPIO_TypeDef *) GPIOD_BASE)
+#define GPIOE   ((GPIO_TypeDef *) GPIOE_BASE)
+#define GPIOF   ((GPIO_TypeDef *) GPIOF_BASE)
+#define GPIOG   ((GPIO_TypeDef *) GPIOG_BASE)
+#define GPIOH   ((GPIO_TypeDef *) GPIOH_BASE)
+
+typedef struct {
+    volatile uint32_t MODER;    /*!< GPIO port mode register,               Address offset: 0x00 */
+    volatile uint32_t OTYPER;   /*!< GPIO port output type register,        Address offset: 0x04 */
+    volatile uint32_t OSPEEDR;  /*!< GPIO port output speed register,       Address offset: 0x08 */
+    volatile uint32_t PUPDR;    /*!< GPIO port pull-up/pull-down register,  Address offset: 0x0C */
+    volatile uint32_t IDR;      /*!< GPIO port input data register,         Address offset: 0x10 */
+    volatile uint32_t ODR;      /*!< GPIO port output data register,        Address offset: 0x14 */
+    volatile uint32_t BSRR;     /*!< GPIO port bit set/reset register,      Address offset: 0x18 */
+    volatile uint32_t LCKR;     /*!< GPIO port configuration lock register, Address offset: 0x1C */
+    volatile uint32_t AFRH, AFRL;   /*!< GPIO alternate function registers,     AFR[0] -> 0x20, AFR[1] -> 0x24 */
+} GPIO_TypeDef;
 
 //Timer base addresses
 #define TIM2_BASE (APB1PERPH_BASE + 0x0000)
