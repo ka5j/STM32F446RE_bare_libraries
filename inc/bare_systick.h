@@ -36,5 +36,8 @@ typedef enum{
     SYSTICK_nCALIB = 0x01U
 }SysTick_CALIBFREQ_t;
 
+void SysTick_Init(SysTick_TypeDef *SysTick, SysTick_RVR_t reload, SysTick_CSRClk_t clk,
+                    SysTick_CSRInterrupt_t interrupt, SysTick_CALIBCLK_t impl, SysTick_CALIBFREQ_t calib);
 
+void SysTick_Set_TIMER(SysTick_TypeDef *SysTick, SysTick_RVR_t reload);
 #endif /* BARE_SYSTICK_H_ */
