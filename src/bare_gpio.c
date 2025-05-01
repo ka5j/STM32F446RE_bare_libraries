@@ -3,7 +3,7 @@
  * @author  ka5j
  * @brief   Bare-metal GPIO driver implementation for STM32F446RE
  * @version 1.1
- * @date    2025-04-28
+ * @date    2025-05-01
  *
  * @note    Provides high-level GPIO functionality without HAL. 
  *          Users can initialize, write, read, and toggle GPIO pins.

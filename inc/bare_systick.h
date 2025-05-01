@@ -2,7 +2,7 @@
  * @file    bare_systick.h
  * @author  ka5j
  * @brief   Bare-metal SysTick timer driver for STM32F446RE
- * @version 1.0
+ * @version 1.1
  * @date    2025-05-01
  *
  * @note    Provides basic SysTick configuration and control without relying on STM32 HAL.
