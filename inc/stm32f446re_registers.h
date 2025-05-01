@@ -8,7 +8,6 @@
  * @note    This file defines structures and base addresses for STM32F446RE peripherals.
  *          Only memory-mapped register definitions are included. No function implementations.
  *******************************************************************************************/
-
  #ifndef DEVICE_REGISTERS_H_
  #define DEVICE_REGISTERS_H_
  
