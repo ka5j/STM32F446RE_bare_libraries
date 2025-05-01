@@ -2,7 +2,7 @@
  * @file    bare_gpio.c
  * @author  ka5j
  * @brief   Bare-metal GPIO driver implementation for STM32F446RE
- * @version 1.0
+ * @version 1.1
  * @date    2025-04-28
  *
  * @note    Provides high-level GPIO functionality without HAL. 
@@ -103,9 +103,9 @@ void bare_gpio_write(GPIO_TypeDef *GPIOx, GPIO_Pins_t pin, GPIO_PinState_t state
  * @param  pin: GPIO pin number (0-15)
  * @retval Pin state (0 or 1)
  */
-uint8_t bare_gpio_read(GPIO_TypeDef *GPIOx, GPIO_Pins_t pin)
+GPIO_PinState_t bare_gpio_read(GPIO_TypeDef *GPIOx, GPIO_Pins_t pin)
 {
-    return (uint8_t)((GPIOx->IDR >> pin) & 0x01);
+    return (GPIO_PinState_t)((GPIOx->IDR >> pin) & 0x01);
 }
 
 /**
