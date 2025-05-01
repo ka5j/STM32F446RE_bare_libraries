@@ -17,17 +17,18 @@ This is a **bare-metal driver library** written from scratch for the **STM32F446
 
 ## File Structure
 STM32F446RE_BARE_LIBRARIES/
-├── src/
-│   ├── bare_gpio.c
-│   ├── bare_systick.c
-├── inc/
+├── examples
+│   └── gpio_example.c
+├── inc
 │   ├── bare_gpio.h
 │   ├── bare_systick.h
+│   ├── board_config.h
 │   └── stm32f446re_registers.h
-├── examples/
-│   └── main.c      # Usage examples
-├── README.md
 ├── LICENSE
+├── README.md
+├── src
+│   ├── bare_gpio.c
+│   └── bare_systick.c
 
 
 ## Features
@@ -54,7 +55,6 @@ STM32F446RE_BARE_LIBRARIES/
 | **Hardware Abstraction** | Enum-based APIs improve safety, readability, and portability. |
 | **Register-level control** | Custom `stm32f446re_registers.h` built to control peripherals manually. |
 | **Maintainable Codebase** | Designed to be clean, documented, and scalable. |
-| **Real-world readiness** | This is the kind of work expected in firmware/embedded driver teams at NASA, SpaceX, etc. |
 
 ---
 
