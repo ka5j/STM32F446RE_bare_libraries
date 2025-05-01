@@ -10,7 +10,7 @@
  *******************************************************************************************/
 
 #include "bare_gpio.h"         // Include the header that declares the public API
-#include "device_registers.h"  // Include low-level device memory definitions
+#include "stm32f446re_registers.h"  // Include low-level device memory definitions
 
 /*******************************************************************************************
  *                               Internal Helper Functions
@@ -58,7 +58,7 @@ static void bare_gpio_enable_clock(GPIO_TypeDef *GPIOx)
  * @param  pull: Pull-up/pull-down configuration
  * @retval None
  */
-void bare_gpio_init(GPIO_TypeDef *GPIOx, uint8_t pin, GPIO_Mode_t mode,
+void bare_gpio_init(GPIO_TypeDef *GPIOx, GPIO_Pins_t pin, GPIO_Mode_t mode,
                     GPIO_OType_t otype, GPIO_Speed_t speed, GPIO_Pull_t pull)
 {
     /* Enable the clock for GPIO port */
@@ -88,9 +88,9 @@ void bare_gpio_init(GPIO_TypeDef *GPIOx, uint8_t pin, GPIO_Mode_t mode,
  * @param  state: GPIO_PIN_HIGH or GPIO_PIN_LOW
  * @retval None
  */
-void bare_gpio_write(GPIO_TypeDef *GPIOx, uint8_t pin, uint8_t state)
+void bare_gpio_write(GPIO_TypeDef *GPIOx, GPIO_Pins_t pin, GPIO_PinState_t state)
 {
-    if (state == GPIO_PIN_HIGH) {
+    if (state == GPIO_PIN_SET) {
         GPIOx->BSRR = (1U << pin); // Set bit (high)
     } else {
         GPIOx->BSRR = (1U << (pin + 16)); // Reset bit (low)
@@ -103,7 +103,7 @@ void bare_gpio_write(GPIO_TypeDef *GPIOx, uint8_t pin, uint8_t state)
  * @param  pin: GPIO pin number (0-15)
  * @retval Pin state (0 or 1)
  */
-uint8_t bare_gpio_read(GPIO_TypeDef *GPIOx, uint8_t pin)
+uint8_t bare_gpio_read(GPIO_TypeDef *GPIOx, GPIO_Pins_t pin)
 {
     return (uint8_t)((GPIOx->IDR >> pin) & 0x01);
 }
@@ -114,7 +114,7 @@ uint8_t bare_gpio_read(GPIO_TypeDef *GPIOx, uint8_t pin)
  * @param  pin: GPIO pin number (0-15)
  * @retval None
  */
-void bare_gpio_toggle(GPIO_TypeDef *GPIOx, uint8_t pin)
+void bare_gpio_toggle(GPIO_TypeDef *GPIOx, GPIO_Pins_t pin)
 {
     GPIOx->ODR ^= (1U << pin);
 }
