@@ -1,24 +1,71 @@
-# STM32F446RE Bare-Metal Register Library
+# STM32 Bare-Metal GPIO & SysTick Driver Library
 
-> A low-level, fully documented STM32F446RE peripheral register mapping library — ideal for learning embedded systems, writing custom drivers, and building projects without relying on HAL/LL abstractions.
+Author: **(ka5j)**  
+Board: **STM32F446RE Nucleo**  
+Language: **C (Bare-metal)**  
+License: **MIT**
 
 ---
 
 ## Overview
 
-This project contains handcrafted, memory-mapped register definitions for the STM32F446RE microcontroller, built entirely from scratch using the STM32 reference manual. It is designed for bare-metal embedded development and educational purposes.
+This is a **bare-metal driver library** written from scratch for the **STM32F446RE** microcontroller. It provides **GPIO** and **SysTick timer** functionality without relying on STM32 HAL or CMSIS driver layers.
 
-No CMSIS. No HAL. Just pure control of the hardware.
+> This project demonstrates my embedded systems expertise in writing production-grade, lightweight, hardware-level drivers for ARM Cortex-M4-based microcontrollers.
+
+---
+
+## File Structure
+STM32F446RE_BARE_LIBRARIES/
+├── src/
+│   ├── bare_gpio.c
+│   ├── bare_systick.c
+├── inc/
+│   ├── bare_gpio.h
+│   ├── bare_systick.h
+│   └── stm32f446re_registers.h
+├── examples/
+│   └── main.c      # Usage examples
+├── README.md
+├── LICENSE
+
 
 ## Features
 
-- Clean and complete register mappings for:
-  - RCC
-  - GPIOA–GPIOH
-  - SysTick
-  - NVIC
-  - AHB/APB bus mappings
-- Accurate reserved memory regions
-- Fully commented with bitfields and register layouts
-- Designed for real-world bare-metal STM32 projects
-- Lightweight and header-only
+### GPIO Driver (`bare_gpio.h/.c`)
+- Pin initialization with mode, output type, speed, pull-up/down
+- Write, read, and toggle pin values
+- Type-safe API using custom enums
+- No runtime heap or HAL dependencies
+- Inline optimizations and strict type checks
+
+### SysTick Driver (`bare_systick.h/.c`)
+- Timer initialization with clock source and interrupt enable flags
+- Runtime reload update
+- Suitable for implementing delays or periodic task triggers
+
+---
+
+## Why This Project Matters
+
+| Skill Demonstrated       | Description |
+|--------------------------|-------------|
+| **Bare-metal C**         | No dependencies on HAL or RTOS. Registers accessed directly via bitwise ops. |
+| **Hardware Abstraction** | Enum-based APIs improve safety, readability, and portability. |
+| **Register-level control** | Custom `stm32f446re_registers.h` built to control peripherals manually. |
+| **Maintainable Codebase** | Designed to be clean, documented, and scalable. |
+| **Real-world readiness** | This is the kind of work expected in firmware/embedded driver teams at NASA, SpaceX, etc. |
+
+---
+
+### Prerequisites
+
+- STM32F446RE Nucleo board
+- STM32CubeIDE **or** bare-metal toolchain (e.g., arm-none-eabi-gcc + OpenOCD)
+- Flash/debug setup (ST-Link, J-Link, etc.)
+
+### Clone the Repository
+
+```bash
+git clone https://github.com/ka5j/STM32F446RE_BARE_LIBRARIES
+cd STM32F446RE_BARE_LIBRARIES
