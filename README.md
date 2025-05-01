@@ -16,19 +16,7 @@ This is a **bare-metal driver library** written from scratch for the **STM32F446
 ---
 
 ## File Structure
-STM32F446RE_BARE_LIBRARIES/
-├── examples
-│   └── gpio_example.c
-├── inc
-│   ├── bare_gpio.h
-│   ├── bare_systick.h
-│   ├── board_config.h
-│   └── stm32f446re_registers.h
-├── LICENSE
-├── README.md
-├── src
-│   ├── bare_gpio.c
-│   └── bare_systick.c
+<pre> ```text STM32F446RE_BARE_LIBRARIES/ ├── examples │ └── gpio_example.c ├── inc │ ├── bare_gpio.h │ ├── bare_systick.h │ ├── board_config.h │ └── stm32f446re_registers.h ├── LICENSE ├── README.md ├── src │ ├── bare_gpio.c │ └── bare_systick.c ``` </pre>
 
 
 ## Features
