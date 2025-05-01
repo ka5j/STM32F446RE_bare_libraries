@@ -11,13 +11,13 @@
  #ifndef BARE_SYSTICK_H_
  #define BARE_SYSTICK_H_
  
- #include "device_registers.h"  // Low-level register definitions
+ #include "stm32f446re_registers.h"  // Low-level register definitions
  #include <stdint.h>            // Standard integer types
  
  /*******************************************************************************************
-  * SysTick Configuration Macros
-  *******************************************************************************************/
- #define SYSTICK_TICKS 16000000U  /*!< Number of ticks for 1-second delay at 16 MHz */
+ * SysTick Configuration Constants
+ *******************************************************************************************/
+#define SYSTICK_1SEC_RELOAD_16MHZ 16000000U  /*!< Reload value for 1s delay at 16 MHz */
  
  /*******************************************************************************************
   * SysTick Control Enumerations
@@ -51,7 +51,7 @@
   * @brief SysTick Reload Value Definitions
   */
  typedef enum {
-     SYSTICK_RELOAD = SYSTICK_TICKS /*!< Reload value for 1-second delay */
+     SYSTICK_RELOAD = SYSTICK_1SEC_RELOAD_16MHZ /*!< Reload value for 1-second delay */
  } SysTick_RVR_t;
  
  /**

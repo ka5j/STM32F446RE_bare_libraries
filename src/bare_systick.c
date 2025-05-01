@@ -11,7 +11,7 @@
  *******************************************************************************************/
 
  #include "bare_systick.h"       // SysTick driver API
- #include "device_registers.h"   // Device-specific register definitions
+ #include "stm32f446re_registers.h"   // Device-specific register definitions
  
  /*******************************************************************************************
   * @brief  Initialize the SysTick timer
@@ -36,16 +36,9 @@
      SysTick_Set_TIMER(reload);
  
      // Configure SysTick Control and Status Register (CSR)
- 
-     if (clk == SYSTICK_PROCESSOR_CLK) {
-         SYSTICK->CSR |= (1U << 2);  // Set CLKSOURCE bit to use processor clock
-     }
- 
-     if (interrupt == SYSTICK_ENABLE_INTERRUPT) {
-         SYSTICK->CSR |= (1U << 1);  // Enable SysTick interrupt
-     }
- 
-     SYSTICK->CSR |= (1U << 0);      // Enable SysTick timer
+     SYSTICK->CSR |= (clk << 2);  // Set CLKSOURCE bit to use processor clock
+     SYSTICK->CSR |= (interrupt << 1);  // Enable SysTick interrupt
+     SYSTICK->CSR |= (SYSTICK_ENABLE << 0);      // Enable SysTick timer
  }
  
  /*******************************************************************************************
