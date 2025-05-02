@@ -9,8 +9,10 @@
  *          Users can initialize, write, read, and toggle GPIO pins.
  *******************************************************************************************/
 
-#include "bare_gpio.h"         // Include the header that declares the public API
-#include "stm32f446re_registers.h"  // Include low-level device memory definitions
+ #include "stm32f446re_addresses.h"  // Include low-level register definitions
+ #include "gpio_registers.h"
+ #include "bare_gpio.h"
+ #include "rcc_registers.h"
 
 /*******************************************************************************************
  *                               Internal Helper Functions

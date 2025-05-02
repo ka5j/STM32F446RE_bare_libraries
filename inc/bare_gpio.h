@@ -11,7 +11,9 @@
 #ifndef BARE_GPIO_H_
 #define BARE_GPIO_H_
 
-#include "stm32f446re_registers.h"  // Include low-level register definitions
+#include "stm32f446re_addresses.h"  // Include low-level register definitions
+#include "gpio_registers.h"
+#include "rcc_registers.h"
 #include <stdint.h>            // Include standard integer types
 
 /*******************************************************************************************

@@ -13,6 +13,7 @@
 #define GPIO_REGISTERS_H_
  
 #include <stdint.h>
+#include "stm32f446re_addresses.h"
 
 /*******************************************************************************************
  * GPIO Base Addresses
