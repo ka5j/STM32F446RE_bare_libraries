@@ -13,7 +13,7 @@
  #define TIM2_5_REGISTERS_H_
  
  #include <stdint.h>
- #include "stm32f446re_addresses.h"  // Must define APB1PERIPH_BASE
+ #include "stm32f446re_addresses.h" 
  
  /*******************************************************************************************
   * TIM2–TIM5 Base Addresses (from RM0390 Reference Manual, Table 1)

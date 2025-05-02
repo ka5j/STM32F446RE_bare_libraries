@@ -30,6 +30,15 @@
  /*******************************************************************************************
   * Enumerations for Timer Control
   *******************************************************************************************/
+/**
+  * @brief Timer number
+  */
+ typedef enum {
+    TIM_2  = 0x00U,  /*!< Timer disabled */
+    TIM_3  = 0x01U,   /*!< Timer enabled */
+    TIM_4  = 0x02U,   /*!< Timer enabled */
+    TIM_5  = 0x03U   /*!< Timer enabled */
+} TIM2_5_t;
  
  /**
   * @brief Timer enable/disable options
