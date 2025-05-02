@@ -64,20 +64,6 @@
      TIM2_5_INT_PENDING = 0x01U   /*!< Interrupt flag pending */
  } TIM2_5_INTCLEAR_t;
  
- /**
-  * @brief Prescaler value preset
-  */
- typedef enum {
-     TIM2_5_PSC = TIM2_5_1KHZ_PRESCALER /*!< Prescaler for 1 kHz tick */
- } TIM2_5_PSC_t;
- 
- /**
-  * @brief Auto-reload value preset
-  */
- typedef enum {
-     TIM2_5_ARR = TIM2_5_1SEC_ARR /*!< Auto-reload for 1-second interval */
- } TIM2_5_ARR_t;
- 
  /*******************************************************************************************
   * API Function Prototypes
   *******************************************************************************************/
