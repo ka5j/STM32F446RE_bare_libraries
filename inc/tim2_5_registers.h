@@ -47,15 +47,15 @@
      volatile uint32_t BDTR;    /*!< Break and dead-time register */
      volatile uint32_t DCR;     /*!< DMA control register */
      volatile uint32_t DMAR;    /*!< DMA address for full transfer */
- } TIM_TypeDef;
+ } TIM2_5_TypeDef;
  
  /*******************************************************************************************
   * TIM Peripheral Definitions
   *******************************************************************************************/
- #define TIM2    ((TIM_TypeDef *) TIM2_BASE)
- #define TIM3    ((TIM_TypeDef *) TIM3_BASE)
- #define TIM4    ((TIM_TypeDef *) TIM4_BASE)
- #define TIM5    ((TIM_TypeDef *) TIM5_BASE)
+ #define TIM2    ((TIM2_5_TypeDef *) TIM2_BASE)
+ #define TIM3    ((TIM2_5_TypeDef *) TIM3_BASE)
+ #define TIM4    ((TIM2_5_TypeDef *) TIM4_BASE)
+ #define TIM5    ((TIM2_5_TypeDef *) TIM5_BASE)
  
  #endif /* TIM_REGISTERS_H_ */
  
