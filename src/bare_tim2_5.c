@@ -12,6 +12,7 @@
  #include "tim2_5_registers.h"
  #include "bare_tim2_5.h"
  #include "rcc_registers.h"
+ #include "nvic_registers.h"
 
 /*******************************************************************************************
  *                               Internal Helper Functions
@@ -61,3 +62,38 @@ static void bare_tim2_5_disable_clock(TIM2_5_TypeDef *TIMx){
     }
 
 }
+
+/**
+ * @brief  Enable RCC Clock for a given GPIO port
+ * @param  GPIOx: pointer to GPIO peripheral base address
+ * @retval None
+ * 
+ * @note   Must be called before accessing GPIO registers.
+ */
+static void bare_tim2_5_enable_interrupt(TIM2_5_TypeDef *TIMx){
+    if(TIMx == TIM2){
+        NVIC->ISER[0] |= (1 << 28);
+    }
+    else if(TIMx == TIM3){
+        NVIC->ISER[0] |= (1 << 29);
+    }
+    else if(TIMx == TIM4){
+        NVIC->ISER[0] |= (1 << 30);
+    }
+    else if(TIMx == TIM5){
+        NVIC->ISER[1] |= (1 << (50 - 32));
+    }
+
+}
+
+/*******************************************************************************************
+ *                               Public API Functions
+ *******************************************************************************************/
+/**
+  * @brief Start the specified TIM2–TIM5 timer
+  * 
+  * @param TIMx Pointer to timer peripheral (e.g., TIM2, TIM3, etc.)
+  */
+ void bare_tim2_5_start(TIM2_5_TypeDef *TIMx){
+
+ }
