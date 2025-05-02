@@ -1,11 +1,11 @@
 /*******************************************************************************************
  * @file    stm32f446re_addresses.h
  * @author  ka5j
- * @brief   STM32F446RE Device Memory-Mapped Register Definitions (Bare Metal)
+ * @brief   STM32F446RE Device Memory-Mapped Addresses (Bare Metal)
  * @version 1.1
  * @date    2025-05-01
  *
- * @note    Only memory-mapped register definitions for core and peripheral modules.
+ * @note    Only memory-mapped register addresses for core and peripheral modules.
  *          This file assumes a 32-bit embedded platform and no CMSIS dependency.
  *******************************************************************************************/
 
