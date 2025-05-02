@@ -10,8 +10,9 @@
  *          Cortex-M system timer.
  *******************************************************************************************/
 
- #include "bare_systick.h"       // SysTick driver API
- #include "stm32f446re_registers.h"   // Device-specific register definitions
+ #include "stm32f446re_addresses.h"  // Low-level register definitions
+ #include "systick_registers.h"
+ #include "bare_systick.h"
  
  /*******************************************************************************************
   * @brief  Initialize the SysTick timer

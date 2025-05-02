@@ -11,7 +11,8 @@
  #ifndef BARE_SYSTICK_H_
  #define BARE_SYSTICK_H_
  
- #include "stm32f446re_registers.h"  // Low-level register definitions
+ #include "stm32f446re_addresses.h"  // Low-level register definitions
+ #include "systick_registers.h"
  #include <stdint.h>            // Standard integer types
  
  /*******************************************************************************************
