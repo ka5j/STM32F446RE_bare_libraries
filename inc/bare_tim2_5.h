@@ -1,99 +1,98 @@
 /*******************************************************************************************
  * @file    bare_tim2_5.h
  * @author  ka5j
- * @brief   Bare-metal TIM2-TIM5 driver for STM32F446RE
+ * @brief   Bare-metal TIM2-TIM5 driver interface for STM32F446RE
  * @version 1.1
  * @date    2025-05-01
  *
- * @note    Provides high-level TIM2-TIM5 functionality without relying on STM32 HAL drivers.
+ * @note    Provides high-level control over general-purpose timers TIM2–TIM5
+ *          without relying on STM32 HAL drivers.
  *******************************************************************************************/
 
-#ifndef BARE_TIM2_5_H_
-#define BARE_TIM2_5_H_
+ #ifndef BARE_TIM2_5_H_
+ #define BARE_TIM2_5_H_
  
-#include "stm32f446re_addresses.h"  // Include low-level register definitions
-#include "tim2_5_registers.h"
-#include "rcc_registers.h"
-#include <stdint.h>            // Include standard integer types
-
-/*******************************************************************************************
- * SysTick Configuration Constants
- *******************************************************************************************/
-#define TIM2_5_1SEC_RELOAD_16MHZ 15999U  /*!< Prescaler value for 1s delay at 16 MHz */
-#define TIM2_5_TIME 1000  /*!< Countdown value for 1s delay */
-
-/*******************************************************************************************
- * GPIO Configuration Enumerations
- *******************************************************************************************/
-
-/**
- * @brief GPIO Output Speeds
- */
-typedef enum {
-    TIM2_5_DISABLE     = 0x00U, /*!< Timer disabled */
-    TIM2_5_ENABLE      = 0x01U /*!< Timer enabled */
-} TIM2_5_CNTEN_t;
-
-/**
- * @brief GPIO Output Speeds
- */
-typedef enum {
-    TIM2_5_INT_DISABLE     = 0x00U, /*!< Timer interrupt generation disabled */
-    TIM2_5_INT_ENABLE      = 0x01U /*!< Timer interrupt generation enabled */
-} TIM2_5_DIERINT_t;
-
-
-/**
- * @brief GPIO Output Speeds
- */
-typedef enum {
-    TIM2_5_INT_CLEAR       = 0x00U, /*!< Timer interrupt flag clear */
-    TIM2_5_INT_PENDING     = 0x01U /*!< Timer interrupt flag pending */
-} TIM2_5_INTCLEAR_t;
-
-/**
-  * @brief SysTick Reload Value Definitions
-  */
-typedef enum {
-    TIM2_5_PSC = TIM2_5_1SEC_RELOAD_16MHZ /*!< Reload value for 1-second delay */
-} TIM2_5_PSC_t;
-
-/**
-  * @brief SysTick Reload Value Definitions
+ #include <stdint.h>                  // Standard integer types
+ #include "stm32f446re_addresses.h"   // Peripheral base addresses
+ #include "tim2_5_registers.h"        // Timer-specific register structures
+ #include "rcc_registers.h"           // RCC peripheral definitions
+ 
+ /*******************************************************************************************
+  * Timer Configuration Constants
+  *******************************************************************************************/
+ 
+ // Prescaler value to get 1 kHz timer tick from 16 MHz clock
+ #define TIM2_5_1KHZ_PRESCALER 15999U
+ 
+ // Auto-reload value for 1-second cycle at 1 kHz tick rate
+ #define TIM2_5_1SEC_ARR       1000U
+ 
+ /*******************************************************************************************
+  * Enumerations for Timer Control
+  *******************************************************************************************/
+ 
+ /**
+  * @brief Timer enable/disable options
   */
  typedef enum {
-    TIM2_5_ARR = TIM2_5_TIME /*!< Reload value for 1-second delay */
-} TIM2_5_ARR_t;
-
-/*******************************************************************************************
- * API Function Prototypes
- *******************************************************************************************/
-
-/**
- * @brief Initialize a GPIO pin with specified configurations
- * 
- * @param GPIOx   Pointer to GPIO peripheral (e.g., GPIOA, GPIOB, etc.)
- * @param pin     GPIO pin number (0-15)
- * @param mode    Mode of the GPIO pin
- * @param otype   Output type configuration
- * @param speed   Output speed configuration
- * @param pull    Pull-up/Pull-down configuration
- */
-void bare_tim2_5_start(TIM2_5_TypeDef *GPIOx);
-
-/**
- * @brief Initialize a GPIO pin with specified configurations
- * 
- * @param GPIOx   Pointer to GPIO peripheral (e.g., GPIOA, GPIOB, etc.)
- * @param pin     GPIO pin number (0-15)
- * @param mode    Mode of the GPIO pin
- * @param otype   Output type configuration
- * @param speed   Output speed configuration
- * @param pull    Pull-up/Pull-down configuration
- */
-void bare_tim2_5_set(TIM2_5_TypeDef *GPIOx);
-
-
-
-
-#endif
+     TIM2_5_DISABLE = 0x00U,  /*!< Timer disabled */
+     TIM2_5_ENABLE  = 0x01U   /*!< Timer enabled */
+ } TIM2_5_CNTEN_t;
+ 
+ /**
+  * @brief Timer interrupt enable/disable
+  */
+ typedef enum {
+     TIM2_5_INT_DISABLE = 0x00U,  /*!< Interrupt disabled */
+     TIM2_5_INT_ENABLE  = 0x01U   /*!< Interrupt enabled */
+ } TIM2_5_DIERINT_t;
+ 
+ /**
+  * @brief Timer interrupt flag states
+  */
+ typedef enum {
+     TIM2_5_INT_CLEAR   = 0x00U,  /*!< Interrupt flag clear */
+     TIM2_5_INT_PENDING = 0x01U   /*!< Interrupt flag pending */
+ } TIM2_5_INTCLEAR_t;
+ 
+ /**
+  * @brief Prescaler value preset
+  */
+ typedef enum {
+     TIM2_5_PSC = TIM2_5_1KHZ_PRESCALER /*!< Prescaler for 1 kHz tick */
+ } TIM2_5_PSC_t;
+ 
+ /**
+  * @brief Auto-reload value preset
+  */
+ typedef enum {
+     TIM2_5_ARR = TIM2_5_1SEC_ARR /*!< Auto-reload for 1-second interval */
+ } TIM2_5_ARR_t;
+ 
+ /*******************************************************************************************
+  * API Function Prototypes
+  *******************************************************************************************/
+ 
+ /**
+  * @brief Start the specified TIM2–TIM5 timer
+  * 
+  * @param TIMx Pointer to timer peripheral (e.g., TIM2, TIM3, etc.)
+  */
+ void bare_tim2_5_start(TIM2_5_TypeDef *TIMx);
+ 
+ /**
+  * @brief Set or configure the specified TIM2–TIM5 timer (e.g., prescaler, ARR, PWM mode)
+  * 
+  * @param TIMx Pointer to timer peripheral (e.g., TIM2, TIM3, etc.)
+  */
+ void bare_tim2_5_set(TIM2_5_TypeDef *TIMx);
+ 
+ /**
+  * @brief Stop the specified TIM2–TIM5 timer
+  * 
+  * @param TIMx Pointer to timer peripheral (e.g., TIM2, TIM3, etc.)
+  */
+ void bare_tim2_5_stop(TIM2_5_TypeDef *TIMx);
+ 
+ #endif // BARE_TIM2_5_H_
+ 
