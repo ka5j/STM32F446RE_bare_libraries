@@ -13,11 +13,38 @@
  #include "bare_tim2_5.h"
  #include "rcc_registers.h"
  #include "nvic_registers.h"
+ #include <stdint.h>
  
  /*******************************************************************************************
   *                               Internal Helper Functions
   *******************************************************************************************/
- 
+ /**
+  * 
+  */
+ static void set_gpio_AFR(TIM2_5_TypeDef *TIMx, GPIO_TypeDef *GPIOx, GPIO_Pins_t pin){
+    if (pin <= 7){
+        if(TIMx == TIM2){
+            GPIOx->AFRL &= ~(0xF << (4 * pin)); // Clear previous AF
+            GPIOx->AFRL |=  (0x1 << (4 * pin)); // Set AF1 (TIM2_CH1)
+        }
+        else{
+            GPIOx->AFRL &= ~(0xF << (4 * pin)); // Clear previous AF
+            GPIOx->AFRL |=  (0x2 << (4 * pin)); // Set AF1 (TIM2_CH1)
+        }
+    }
+
+    if (pin > 7){
+        if(TIMx == TIM2){
+            GPIOx->AFRH &= ~(0xF << ((4 * pin) - 32)); // Clear previous AF
+            GPIOx->AFRH |=  (0x1 << ((4 * pin) - 32)); // Set AF1
+        }
+        else{
+            GPIOx->AFRH &= ~(0xF << ((4 * pin) - 32)); // Clear previous AF
+            GPIOx->AFRH |=  (0x2 << ((4 * pin) - 32)); // Set AF2
+        }
+    }
+ }
+
  /**
   * @brief  Enable the RCC peripheral clock for the specified timer
   * @param  TIMx Pointer to the TIM2–TIM5 peripheral
@@ -116,4 +143,19 @@
      bare_tim2_5_disable_interrupt(TIMx);  // Disable NVIC interrupt
      bare_tim2_5_disable_clock(TIMx);      // Disable peripheral clock
  }
+
  
+ /**
+  * @brief Generate PWM signal for the specified TIM2–TIM5 timer
+  * 
+  * @param TIMx  Pointer to timer peripheral (e.g., TIM2, TIM3, etc.)
+  * @param GPIOx Pointer to GPIO peripheral (e.g., GPIOA, GPIOB, etc.)
+  * @param pin   GPIO pin number (0-15)
+  */
+ void bare_tim2_5_gen_PWM(TIM2_5_TypeDef *TIMx, GPIO_TypeDef *GPIOx, GPIO_Pins_t pin, uint32_t duty_in_percentage, uint32_t freqency_in_Hz){
+    bare_gpio_AF(GPIOx, pin);
+    set_gpio_AFR(TIMx, GPIOx, pin);
+    bare_tim2_5_enable_clock(TIMx);      // Enable peripheral clock
+    TIMx->PSC = TIM2_5_1KHZ_PRESCALER;  // Set prescaler for 1 kHz timer tick
+    TIMx->ARR = freqency_in_Hz - 1;        // Set ARR for 1 second interval
+ }

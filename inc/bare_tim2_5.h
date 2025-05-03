@@ -32,28 +32,13 @@
  /*******************************************************************************************
   * Enumerations for Timer Control
   *******************************************************************************************/
- typedef enum{
-    AF0 = 0U,
-    AF1 = 1U,
-    AF2 = 2U
-    /*
-    .
-    .
-    .
-    .
-    */
- }
-  TIM2_5_AF_t;
 
-/**
-  * @brief Timer number
-  */
- typedef enum {
-    TIM_2  = 0x00U,  /*!< Timer disabled */
-    TIM_3  = 0x01U,   /*!< Timer enabled */
-    TIM_4  = 0x02U,   /*!< Timer enabled */
-    TIM_5  = 0x03U   /*!< Timer enabled */
-} TIM2_5_t;
+ typedef enum{
+    CHANNEL1 = 1U,
+    CHANNEL2 = 2U,
+    CHANNEL3 = 3U,
+    CHANNEL4 = 4U
+ }TIM2_5_CHNL_t;
  
  /**
   * @brief Timer enable/disable options
@@ -111,7 +96,7 @@
   * @param GPIOx Pointer to GPIO peripheral (e.g., GPIOA, GPIOB, etc.)
   * @param pin   GPIO pin number (0-15)
   */
- void bare_tim2_5_gen_PWM(TIM2_5_TypeDef *TIMx, GPIO_TypeDef *GPIOx, GPIO_Pins_t pin);
+ void bare_tim2_5_gen_PWM(TIM2_5_TypeDef *TIMx, GPIO_TypeDef *GPIOx, GPIO_Pins_t pin, uint32_t duty_in_percentage, uint32_t freqency_in_Hz);
  
  #endif // BARE_TIM2_5_H_
  
