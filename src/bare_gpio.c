@@ -120,3 +120,28 @@ void bare_gpio_toggle(GPIO_TypeDef *GPIOx, GPIO_Pins_t pin)
 {
     GPIOx->ODR ^= (1U << pin);
 }
+
+/**
+ * @brief Initialize the GPIO pin to be in alternate function mode
+ * 
+ * @param GPIOx   Pointer to GPIO peripheral
+ * @param pin     GPIO pin number
+ */
+void bare_gpio_AF(GPIO_TypeDef *GPIOx, GPIO_Pins_t pin){
+    /* Enable the clock for GPIO port */
+    bare_gpio_enable_clock(GPIOx);
+
+    /* 1. Configure GPIO mode */
+    GPIOx->MODER &= ~(0x3U << (pin * 2)); // Clear existing mode
+    GPIOx->MODER |= ((GPIO_MODE_AF & 0x03U) << (pin * 2)); // Set new mode
+
+    /* 2. Configure output type */
+    GPIOx->OTYPER &= ~(0x1U << pin); // push-pull type
+
+    /* 3. Configure output speed */
+    GPIOx->OSPEEDR &= ~(0x3U << (pin * 2)); // Clear
+    GPIOx->OSPEEDR |= (( GPIO_SPEED_HIGH & 0x03U) << (pin * 2)); // Set
+
+    /* 4. Configure pull-up/pull-down resistors */
+    GPIOx->PUPDR &= ~(0x3U << (pin * 2)); // no pull-up/pull-down  
+}

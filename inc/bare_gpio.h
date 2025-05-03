@@ -129,4 +129,12 @@ GPIO_PinState_t bare_gpio_read(GPIO_TypeDef *GPIOx, GPIO_Pins_t pin);
  */
 void bare_gpio_toggle(GPIO_TypeDef *GPIOx, GPIO_Pins_t pin);
 
+/**
+ * @brief Initialize the GPIO pin to be in alternate function mode
+ * 
+ * @param GPIOx   Pointer to GPIO peripheral
+ * @param pin     GPIO pin number
+ */
+void bare_gpio_AF(GPIO_TypeDef *GPIOx, GPIO_Pins_t pin);
+
 #endif /* BARE_GPIO_H_ */
