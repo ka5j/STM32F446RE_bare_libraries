@@ -19,6 +19,21 @@
 /*******************************************************************************************
  * GPIO Configuration Enumerations
  *******************************************************************************************/
+
+ /**
+ * @brief GPIO Ports
+ */
+typedef enum {
+    GPIO_PORTA = 0U,
+    GPIO_PORTB = 1U,
+    GPIO_PORTC = 2U,
+    GPIO_PORTD = 3U,
+    GPIO_PORTE = 4U,
+    GPIO_PORTF = 5U,
+    GPIO_PORTG = 6U,
+    GPIO_PORTH = 7U
+} GPIO_Ports_t;
+
 /**
  * @brief GPIO Pins
  */

@@ -16,6 +16,8 @@
  #include "stm32f446re_addresses.h"   // Peripheral base addresses
  #include "tim2_5_registers.h"        // Timer-specific register structures
  #include "rcc_registers.h"           // RCC peripheral definitions
+ #include "gpio_registers.h"          // GPIO peripheral definitions
+ #include "bare_gpio.h"               // GPIO header file
  
  /*******************************************************************************************
   * Timer Configuration Constants
@@ -88,6 +90,15 @@
   * @param TIMx Pointer to timer peripheral (e.g., TIM2, TIM3, etc.)
   */
  void bare_tim2_5_stop(TIM2_5_TypeDef *TIMx);
+
+ /**
+  * @brief Generate PWM signal for the specified TIM2–TIM5 timer
+  * 
+  * @param TIMx  Pointer to timer peripheral (e.g., TIM2, TIM3, etc.)
+  * @param GPIOx Pointer to GPIO peripheral (e.g., GPIOA, GPIOB, etc.)
+  * @param pin   GPIO pin number (0-15)
+  */
+ void bare_tim2_5_gen_PWM(TIM2_5_TypeDef *TIMx, GPIO_TypeDef *GPIOx, GPIO_Pins_t pin);
  
  #endif // BARE_TIM2_5_H_
  
