@@ -159,4 +159,13 @@ void bare_gpio_toggle(GPIO_TypeDef *GPIOx, GPIO_Pins_t pin);
  */
 void bare_gpio_AF(GPIO_TypeDef *GPIOx, GPIO_Pins_t pin);
 
+/**
+ * @brief  Enable RCC Clock for a given GPIO port
+ * @param  GPIOx: pointer to GPIO peripheral base address
+ * @retval None
+ *
+ * @note   Must be called before accessing GPIO registers.
+ */
+static void bare_gpio_enable_clock(GPIO_TypeDef *GPIOx);
+
 #endif /* BARE_GPIO_H_ */
